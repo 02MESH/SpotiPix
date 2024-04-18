@@ -14,6 +14,7 @@ load_dotenv()
 # Get the username from terminal
 username = "31nf5a5md2s5zugfwwqylxj7bj34"
 
+#http://localhost:7000
 # Get the API credentials
 spotify_client_id = os.getenv('SPOTIFY_CLIENT_ID')
 spotify_client_secret = os.getenv('SPOTIFY_CLIENT_SECRET')
@@ -49,5 +50,14 @@ while response['next']:
 # Now, `all_playlists` contains all of the user's playlists
 # Iterate through each playlist and display its name and total tracks
 for playlist in all_playlists:
-    if(playlist['owner']['id']==username):
+    if playlist['owner']['id'] == username:
         print(f"Playlist Name: {playlist['name']} - Total Tracks: {playlist['tracks']['total']}")
+        # Fetch tracks for the playlist
+        tracks = sp.playlist_tracks(playlist['id'])
+        # Iterate over tracks and print song details
+        for track in tracks['items']:
+            if track and track['track']:  # Check if track and track['track'] are not None
+                song_name = track['track']['name']
+                artist_name = track['track']['artists'][0]['name']
+                print(f"Song: {song_name} - Artist: {artist_name}")
+
